@@ -1,4 +1,4 @@
-var url = "https://api.spotify.com/v1/artists/43ZHCT0cAZBISjO8DG9PnE/top-tracks?country=SE";
+var elvisUrl = "https://api.spotify.com/v1/artists/43ZHCT0cAZBISjO8DG9PnE/top-tracks?country=SE";
 
 var dataSetProperties = {
   fillColor: 'rgba(220,220,220,0.5)',
@@ -26,7 +26,7 @@ function extractPopularity(songs) {
 function extractNames(songs) {
   var songNames = [];
   for (var i = 0; i < songs.length; i++) {
-    names.push(tracks[i].name);
+    songNames.push(songs[i].name);
   }
   return songNames;
 }
@@ -45,7 +45,7 @@ function chartData(labels, inputData) {
 
 function getSpotifyTracks(callback){
   $.ajax({
-    url: url,
+    url: elvisUrl,
     success: function(response) {
       callback(response);
     }
@@ -54,11 +54,11 @@ function getSpotifyTracks(callback){
 
 function success(parsedJSON) {
 
-  var topTracks = extractTop10Tracks(parsedJSON);
+  var topTracks = extractTop10Tracks(parsedJSON.tracks);
   var names = extractNames(topTracks);
-  var streams = extractNumberOfStreams(topTracks);
+  var streams = extractPopularity(topTracks);
   var data = chartData(names, streams);
-  var ctx = document.getElementByID("spotify-chart").getContext("2d");
-  new Chart(ctx).bar(data);
+  var ctx = document.getElementById("spotify-chart").getContext("2d");
+  new Chart(ctx).Bar(data);
 
 }
