@@ -1,14 +1,9 @@
 var elvisUrl = "https://api.spotify.com/v1/artists/43ZHCT0cAZBISjO8DG9PnE/top-tracks?country=SE";
 
-var dataSetProperties = {
-  fillColor: 'rgba(220,220,220,0.5)',
-  strokeColor: 'rgba(220,220,220,0.8)',
-  highlightFill: 'rgba(220,220,220,0.75)',
-  highlightStroke: 'rgba(220,220,220,1)'
-};
 
 $(function() {
-  getSpotifyTracks(success);
+  getSpotifyTracks(success, elvisUrl);
+  //getSpotifyTracks(success, beatlesUrl);
 });
 
 function extractTop10Tracks(songs) {
@@ -36,16 +31,19 @@ function chartData(labels, inputData) {
   songData.labels = labels;
   songData.datasets = [
     {
-      dataSetProperties,
+      fillColor: 'rgba(220,220,220,0.5)',
+      strokeColor: 'rgba(220,220,220,0.8)',
+      highlightFill: 'rgba(220,220,220,0.75)',
+      highlightStroke: 'rgba(220,220,220,1)',
       data: inputData
     }
   ];
   return songData;
 }
 
-function getSpotifyTracks(callback){
+function getSpotifyTracks(callback, url) {
   $.ajax({
-    url: elvisUrl,
+    url: url,
     success: function(response) {
       callback(response);
     }
@@ -58,7 +56,9 @@ function success(parsedJSON) {
   var names = extractNames(topTracks);
   var streams = extractPopularity(topTracks);
   var data = chartData(names, streams);
-  var ctx = document.getElementById("spotify-chart").getContext("2d");
-  new Chart(ctx).Bar(data);
+  var barctx = document.getElementById("spotify-chart").getContext("2d");
+  new Chart(barctx).Bar(data);
+  var linectx = document.getElementById("line-chart").getContext("2d");
+  new Chart(linectx).Line(data);
 
 }
