@@ -42,7 +42,7 @@ describe("spotifyChart", function(){
   describe("ran server and checked that chart rendered", function(){
     it("looks similar to the picture in the readme and I'm done with the lab", function() {
       // type your name in the empty string below
-      var signature = "Katie Hoffman";
+      var signature = "";
       expect(signature.length).toBeGreaterThan(4);
       var names = signature.split(" ");
       expect(names.length).toBeGreaterThan(1);
