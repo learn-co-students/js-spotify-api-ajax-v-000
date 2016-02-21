@@ -15,12 +15,8 @@ $(function() {
 // then call function within doc ready to get them to work
 // and display the chart correctly in index.html
 
-function extractTop10Tracks(parsedJSON) {
-  var extractedTracks = [];
-  $.each(parsedJSON['tracks'], function(index, track){
-    extractedTracks.push(track);
-  });
-  return extractedTracks;
+function extractTop10Tracks(tracks) {
+  return tracks.slice(0, 10);
 }
 
 function extractPopularity(tracks) {
@@ -43,7 +39,6 @@ function chartData(labels, inputData) {
   var dataToReturn = {};
   dataToReturn['labels'] = labels;
   dataToReturn['datasets'] = [{
-    label: 'Tracks',
     fillColor: 'rgba(220,220,220,0.5)',
     strokeColor: 'rgba(220,220,220,0.8)',
     highlightFill: 'rgba(220,220,220,0.75)',
@@ -63,9 +58,9 @@ function getSpotifyTracks(callback){
   // use the url variable defined above if it helps
   $.ajax({
     url: url,
-    type: 'GET'
-  }).done(function(response) {
-    callback(response);
+    success: function(response) {
+      callback(response);
+    }
   });
 }
 
@@ -75,7 +70,7 @@ function success(parsedJSON) {
   // http://www.chartjs.org/docs/#bar-chart
   // you will need to call on:
   //  1. extractTop20Tracks - pass it tracks
-  var tracks = extractTop10Tracks(parsedJSON);
+  var tracks = extractTop10Tracks(parsedJSON.tracks);
   console.log(tracks);
   //  2. extractNames -  pass it the result of #1
   var names = extractNames(tracks);
