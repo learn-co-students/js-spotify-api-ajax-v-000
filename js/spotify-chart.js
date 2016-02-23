@@ -1,64 +1,57 @@
-var url = "https://api.spotify.com/v1/artists/43ZHCT0cAZBISjO8DG9PnE/top-tracks?country=SE";
+var url = "http://charts.spotify.com/api/tracks/most_streamed/us/weekly/latest";
+
+var dataSetProperties = {
+  label: 'Spotify Chart of Top 20 Streamed Songs on Spotify with their Steam Count',
+  fillColor: 'rgba(220,220,220,0.5)',
+  strokeColor: 'rgba(220,220,220,0.8)',
+  highlightFill: 'rgba(220,220,220,0.75)',
+  highlightStroke: 'rgba(220,220,220,1)'
+}
 
 $(function() {
   getSpotifyTracks(success);
 });
 
-// write functions to pass spec tests here outside the jQuery doc ready
-// then call function within doc ready to get them to work
-// and display the chart correctly in index.html
-
-function extractTop10Tracks(tracks) {
-  return tracks.slice(0, 10);
+function extractTop20Tracks(tracks) {
+  return tracks.slice(0,20);
 }
 
-function extractPopularity(tracks) {
-  var numOfStreams = [];
-  for (i = 0; i < tracks.length; i++) {
-    numOfStreams.push(tracks[i].popularity);
+function extractNumberOfStreams(tracks) {
+  numArray = [];
+  for(var i=0;i<tracks.length;i++){
+    numArray.push(tracks[i].num_streams);
   }
-  return numOfStreams;
+  return numArray;
 }
 
 function extractNames(tracks) {
-  var names = [];
-  for (i = 0; i < tracks.length; i++) {
-    names.push(tracks[i].name);
+  nameArray = [];
+  for(var i=0;i<tracks.length;i++){
+    nameArray.push(tracks[i].track_name);
   }
-  return names;
+  return nameArray;
 }
 
 function chartData(labels, inputData) {
-  var dataObj = {};
-  dataObj.labels = labels;
-  dataObj.datasets = [
-    {
-      fillColor: 'rgba(220,220,220,0.5)', 
-      strokeColor: 'rgba(220,220,220,0.8)', 
-      highlightFill: 'rgba(220,220,220,0.75)', 
-      highlightStroke: 'rgba(220,220,220,1)', 
-      data: inputData
-    }
-  ];
-  return dataObj;
+  dataSetProperties.data = inputData;
+  return { labels: labels, datasets: [dataSetProperties] };
 }
 
 function getSpotifyTracks(callback){
   $.ajax({
     url: url,
-    success: function(result) {
-      callback(result);
+    dataType: 'jsonp',
+    success: function(response){
+      callback(response);
     }
-  });
+  })
 }
 
 function success(parsedJSON) {
-  var tracks = extractTop10Tracks(parsedJSON.tracks);
-  var names = extractNames(tracks);
-  var streams = extractPopularity(tracks);
-  var data = chartData(names, streams);
-  var ctx = document.getElementById("spotify-chart").getContext("2d");
-  new Chart(ctx).Bar(data);
+  var tracks = extractTop20Tracks(parsedJSON.tracks);
+  var labels = extractNames(tracks);
+  var streams = extractNumberOfStreams(tracks);
+  var data = chartData(labels, streams);
+  var ctx = $('#spotify-chart')[0].getContext('2d');
+  return new Chart(ctx).Bar(data, {});
 }
-
-
