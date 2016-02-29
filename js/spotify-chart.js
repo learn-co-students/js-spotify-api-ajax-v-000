@@ -11,10 +11,6 @@ $(function() {
   getSpotifyTracks(success);
 });
 
-// write functions to pass spec tests here outside the jQuery doc ready
-// then call function within doc ready to get them to work
-// and display the chart correctly in index.html
-
 function extractTop10Tracks(parsedJSON) {
   return parsedJSON.tracks;
 }
@@ -51,20 +47,9 @@ function chartData(labels, inputData) {
 }
 
 function getSpotifyTracks(callback){
-  // your ajax call here, on success it should call on the
-  // parameter it's passed (it's a function), and pass it's
-  // parameter the data it received
-  // $.ajax({
-  //   url: url,
-  //   success: function(response){
-  //     callback(response);
-  //   }
-  // });
-
   $.getJSON(url, function(response){
     success(response);
   })
-  // use the url variable defined above if it helps
 }
 
 function success(parsedJSON) {
@@ -85,7 +70,7 @@ function success(parsedJSON) {
   var names = extractNames(tracks);
   var pop = extractPopularity(tracks);
 
-  var ctx = $('')
-
-
+  var data = chartData(names, pop);
+  var ctx = document.getElementById("#spotify-chart");
+  new Chart(ctx).Bar(data);
 }
