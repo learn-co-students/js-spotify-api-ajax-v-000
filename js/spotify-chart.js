@@ -7,7 +7,7 @@ var dataSetProperties = {
   highlightStroke: 'rgba(220,220,220,1)'
 };
 
-$(function() {
+$(document).ready(function() {
   getSpotifyTracks(success);
 });
 
@@ -16,32 +16,48 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
-  // your code here
+  var songs = tracks;
+  return songs;
 }
 
 function extractPopularity(tracks) {
-  // your code here
+  return $.map(tracks,function(track, index) { return track.popularity; })
 }
 
 function extractNames(tracks) {
-  // your code here
+  return $.map(tracks,function(track, index) { return track.name; });
 }
 
 function chartData(labels, inputData) {
-  // your code here
-
-  // use the dataSetProperties variable defined above if it helps
+  dataSetProperties["data"] = inputData; 
+  var newData = {
+    labels: labels,
+    datasets: [ dataSetProperties ]
+  };
+  return newData;
+  
 }
 
 function getSpotifyTracks(callback){
-  // your ajax call here, on success it should call on the 
-  // parameter it's passed (it's a function), and pass it's 
-  // parameter the data it received
-
-  // use the url variable defined above if it helps
+  $.ajax({
+    url: url,
+    method: "GET",
+    dataType: "JSON",
+    success: function(response) {
+      callback(response);
+    }
+  });
 }
 
 function success(parsedJSON) {
+  var songs = extractTop10Tracks(parsedJSON);
+  var names = extractNames(songs.tracks);
+  var popularity = extractPopularity(songs.tracks);
+  var data = chartData(names, popularity);
+  var ctx = $("#spotify-chart").get(0).getContext("2d");
+  var myNewChart = new Chart(ctx);
+  new Chart(ctx).Bar(data);
+
   // this function will make a new bar chart, refer to this url:
   // http://www.chartjs.org/docs/#bar-chart
   // you will need to call on:
