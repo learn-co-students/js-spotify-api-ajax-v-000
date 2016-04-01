@@ -43,14 +43,6 @@ function chartData(labels, inputData) {
   data['datasets'][0]['data']  = inputData;
 
   return data;
-
-  // Get context with jQuery - using jQuery's .get() method.
-  // or var ctx = $("#spotify-chart").get(0).getContext("2d");
-
-  var ctx = document.getElementById("#spotify-chart").getContext("2d");
-  // This will get the first returned node in the jQuery collection.
-  //create a new Chart object
-  var myNewChart = new Chart(ctx).Bar(data);
 }
 
 function getSpotifyTracks(callback){
@@ -64,12 +56,9 @@ function getSpotifyTracks(callback){
     //type: 'GET',
     //contentType: 'application/json',
     dataType: 'json',
-    success: callback
+    success: success
+
   });
-  //.done(function(xhr) {
-  //  console.log(xhr);
-  //  debugger;
-  //});
 }
 
 
@@ -84,5 +73,17 @@ function success(parsedJSON) {
   //  5. make a variable `ctx` and select the canvas with the id of spotify-chart
   //     * also make sure to specify 2d context
   //  6. make a new bar chart!
+  var tracks = parsedJSON.tracks;
+  var labels = extractNames(tracks);
+  var inputData = extractPopularity(tracks);
+  var data = chartData(labels, inputData);
+  debugger;
 
+
+  // Get context with jQuery - using jQuery's .get() method.
+  // this did not work - var ctx = document.getElementById("#spotify-chart").getContext("2d");
+  var ctx = $('#spotify-chart').get(0).getContext('2d')
+  // This will get the first returned node in the jQuery collection.
+  //create a new Chart object
+  new Chart(ctx).Bar(data);
 }

@@ -2,6 +2,7 @@ javascripts:
   files:
     - js/jquery.min.js
     - js/spotify-chart.js
+    - js/Chart.js
   specs:
     - js/jquery.min.js
     - spec/jasmine-jquery.js
