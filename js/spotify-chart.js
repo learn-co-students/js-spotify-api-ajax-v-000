@@ -16,24 +16,43 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
-  // your code here
+  return tracks;
 }
 
 function extractPopularity(tracks) {
-  // your code here
+  var trackPopularity = [];
+  tracks.forEach(function(track){
+    trackPopularity.push(track.popularity);
+  })
+  return trackPopularity;
 }
 
 function extractNames(tracks) {
-  // your code here
+  var trackNames = [];
+  tracks.forEach(function(track){
+    trackNames.push(track.name);
+  })
+  return trackNames;
 }
 
 function chartData(labels, inputData) {
-  // your code here
+  labels = $.map(labels, function(label){
+    return label;
+  });
 
-  // use the dataSetProperties variable defined above if it helps
+  inputData = $.map(inputData, function(data){
+    return data;
+  });
+
+  dataSetProperties['data'] = inputData;
+
+  return { labels: labels, datasets: [ dataSetProperties] }
 }
 
 function getSpotifyTracks(callback){
+  $.ajax({
+    
+  })
   // your ajax call here, on success it should call on the 
   // parameter it's passed (it's a function), and pass it's 
   // parameter the data it received
