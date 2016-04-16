@@ -59,21 +59,39 @@ function extractNames(tracks) {
 
 function chartData(labels, inputData) {
   // your code here
-  data.labels = labels;
-  dataSetProperties[0].data = inputData;
-  data.datasets = dataSetProperties;
-  var ctx = document.getElementById("spotify-chart").getContext("2d");
-  var myBarChart = new Chart(ctx).Bar(data);
+  // data.labels = labels;
+  // dataSetProperties[0].data = inputData;
+  // data.datasets = dataSetProperties;
+  // var ctx = document.getElementById("spotify-chart").getContext("2d");
+  // var myBarChart = new Chart(ctx).Bar(data);
 
-  // use the dataSetProperties variable defined above if it helps
+  // // use the dataSetProperties variable defined above if it helps
+
+
+  // return data;
+
+
+  var dataObj = {};
+  dataObj.labels = labels;
+  dataObj.datasets = [
+    {
+      fillColor: 'rgba(220,220,220,0.5)', 
+      strokeColor: 'rgba(220,220,220,0.8)', 
+      highlightFill: 'rgba(220,220,220,0.75)', 
+      highlightStroke: 'rgba(220,220,220,1)', 
+      data: inputData
+    }
+  ];
+  return dataObj;
 }
 
 function getSpotifyTracks(callback){
   $.ajax({
     url: url,
-    type: 'GET',
-    dataType: 'json',
-  }).success(callback);
+    success: function(result) {
+      callback(result);
+    }
+  });
   // your ajax call here, on success it should call on the 
   // parameter it's passed (it's a function), and pass it's 
   // parameter the data it received
