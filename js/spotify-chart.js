@@ -76,6 +76,7 @@ function success(parsedJSON) {
   names = extractNames(topTracks);
   popularity = extractPopularity(topTracks);
   data = chartData(names, popularity);
-  var ctx = $('#spotify-chart').get(0).getContext("2d");
+  debugger;
+  var ctx = $('canvas#spotify-chart').get(0).getContext("2d");
   var myBarChart = new Chart(ctx).Bar(data);
 }
