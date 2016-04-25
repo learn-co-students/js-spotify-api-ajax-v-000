@@ -16,21 +16,44 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
-  // your code here
+  return tracks.slice(0, 10);
 }
 
 function extractPopularity(tracks) {
-  // your code here
+  var popularities = [];
+
+  tracks.forEach(function(track){
+    popularities.push(track["popularity"]);
+  });
+
+
+  return popularities;
 }
 
 function extractNames(tracks) {
-  // your code here
+  var names = [];
+
+  tracks.forEach(function(track, index){
+    names.push(track["name"]);
+  });
+
+  return names;
 }
 
 function chartData(labels, inputData) {
   // your code here
 
   // use the dataSetProperties variable defined above if it helps
+
+  var spotifyData = dataSetProperties;
+  spotifyData.data = inputData;
+
+  var chartData = {
+    labels: labels,
+    datasets: [spotifyData]
+  };
+
+  return chartData;
 }
 
 function getSpotifyTracks(callback){
@@ -39,17 +62,33 @@ function getSpotifyTracks(callback){
   // parameter the data it received
 
   // use the url variable defined above if it helps
+  $.ajax({
+    url: url,
+    type: "GET",
+    dataType: "json",
+    success: function(data){
+      callback(data)
+    }
+  });
 }
 
 function success(parsedJSON) {
   // this function will make a new bar chart, refer to this url:
   // http://www.chartjs.org/docs/#bar-chart
   // you will need to call on:
-  //  1. extractTop20Tracks - pass it tracks
+  //  1. extractTop10Tracks - pass it tracks
   //  2. extractNames -  pass it the result of #1
   //  3. extractPopularity - pass it the result of #1
   //  4. chartData - pass it results of #2 and #3
   //  5. make a variable `ctx` and select the canvas with the id of spotify-chart
   //     * also make sure to specify 2d context
   //  6. make a new bar chart!
+
+  var top10Tracks = extractTop10Tracks(parsedJSON.tracks);
+  var names = extractNames(top10Tracks);
+  var popularity = extractPopularity(top10Tracks);
+  var chart = chartData(names, popularity);
+
+  var ctx = document.getElementById("spotify-chart").getContext("2d");
+  new Chart(ctx).Bar(chart);
 }
