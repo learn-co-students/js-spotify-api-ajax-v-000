@@ -30,15 +30,17 @@ function extractTop10Tracks(tracks) {
 // uses, in effect, result of function above
 function extractPopularity(tracks) {
   var popArray = tracks.map(function(track, index){
-    // debugger;
     return track.popularity
   })
-  debugger;
   return popArray
 }
 
+// Uses same data as array above (so must be called at same point)
 function extractNames(tracks) {
-  // your code here
+  var namesArray = tracks.map(function(track, index){
+    return track.name
+  })
+  return namesArray
 }
 
 function chartData(labels, inputData) {
