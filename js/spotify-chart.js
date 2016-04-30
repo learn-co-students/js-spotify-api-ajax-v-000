@@ -24,7 +24,7 @@ $(function() {
 // "tracks" represents the responseObject.responseText.tracks
 // remember: ".tracks" has already been called by the time it gets here
 function extractTop10Tracks(tracks) {
-  debugger;
+
   var trackNames = $.map(tracks, function(track, index) {
     return track.name
   })
@@ -51,10 +51,24 @@ function extractNames(tracks) {
 // inputData here must be the collected data from prev three functions
 
 function chartData(labels, inputData) {
-  // your code here
+  var data = {
+    labels: labels,
+    datasets: [
+        {
+            label: "Ten most popular songs for Elvis Presley",
+            fillColor: "rgba(255,99,132,0.2)",
+            strokeColor: "rgba(255,99,132,1)",
+            highlightFill: "rgba(255,99,132,0.4)",
+            highlightStroke: "rgba(255,99,132,1)",
+            data: inputData,
+        }
+      ]
+    }
+  return data  
+};
+
 
   // use the dataSetProperties variable defined above if it helps
-}
 
 function getSpotifyTracks(callback){
   $.get(url, callback)
@@ -62,15 +76,14 @@ function getSpotifyTracks(callback){
 
 function success(parsedJSON) {
 
-  debugger;
-
   var tracksObjs = parsedJSON["tracks"]
   var topTen = extractTop10Tracks(tracksObjs)
-  var popArray = extractPopularity(topTen)
-  var inputData = []
-    inputData.push(popArray, topTen)
-  var chart = chartData(labels, inputData)
-  var ctx; 
+  var popArray = extractPopularity(tracksObjs)
+  var chart = chartData(topTen, popArray)
+
+  // var ctx = document.getElementById('spotify-chart').getContext('2d')
+  var ctx = new Chart(document.getElementById("spotify-chart").getContext("2d")).Bar(chart);
+
 
   // this function will make a new bar chart, refer to this url:
   // http://www.chartjs.org/docs/#bar-chart
