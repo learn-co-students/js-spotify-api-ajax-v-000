@@ -8,6 +8,7 @@ var dataSetProperties = {
 };
 
 $(function() {
+  // alert('ready');
   getSpotifyTracks(success);
 });
 
@@ -16,11 +17,17 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
-  // your code here
+  return tracks;
+  // the beauty of console.log is that it let's you see the objects returned in the browser console. 
+  // turns out that tracks is already an array of the top 10 tracks, so this is almost needless.
 }
 
 function extractPopularity(tracks) {
-  // your code here
+  var numOfStreams = [];
+  for(var i = 0; i > tracks.length; i ++) {
+    numOfStreams.push(tracks[i].popularity);
+  };
+  return numOfStreams;
 }
 
 function extractNames(tracks) {
@@ -34,11 +41,15 @@ function chartData(labels, inputData) {
 }
 
 function getSpotifyTracks(callback){
-  // your ajax call here, on success it should call on the 
-  // parameter it's passed (it's a function), and pass it's 
-  // parameter the data it received
-
-  // use the url variable defined above if it helps
+  $.ajax({
+    url: url,
+    type: 'GET',
+    dataType: 'json',
+    success: function(data) {
+      console.log(data);
+      callback(data);
+    }
+  })
 }
 
 function success(parsedJSON) {
@@ -52,4 +63,7 @@ function success(parsedJSON) {
   //  5. make a variable `ctx` and select the canvas with the id of spotify-chart
   //     * also make sure to specify 2d context
   //  6. make a new bar chart!
+  var topTen = extractTop10Tracks(parsedJSON);
+  var popularity = extractPopularity(topTen);
+  console.log(popularity);
 }
