@@ -17,27 +17,38 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
-  return tracks;
-  // the beauty of console.log is that it let's you see the objects returned in the browser console. 
-  // turns out that tracks is already an array of the top 10 tracks, so this is almost needless.
+  return tracks.slice(0,10);
 }
 
 function extractPopularity(tracks) {
   var numOfStreams = [];
-  for(var i = 0; i > tracks.length; i ++) {
+  for (var i = 0; i < tracks.length; i ++) {
     numOfStreams.push(tracks[i].popularity);
   };
   return numOfStreams;
-}
+};
 
 function extractNames(tracks) {
-  // your code here
+  var songNames = [];
+  for (var i = 0; i < tracks.length; i ++) {
+    songNames.push(tracks[i].name);
+  }
+  console.log(songNames);
+  return songNames;
 }
 
 function chartData(labels, inputData) {
-  // your code here
-
-  // use the dataSetProperties variable defined above if it helps
+  var data = {
+    'labels': labels,
+    'datasets': [{
+      fillColor: dataSetProperties.fillColor,
+      strokeColor: dataSetProperties.strokeColor,
+      highlightFill: dataSetProperties.highlightFill,
+      highlightStroke: dataSetProperties.highlightStroke,
+      data: inputData
+    }]
+  };
+  return data;
 }
 
 function getSpotifyTracks(callback){
@@ -46,7 +57,7 @@ function getSpotifyTracks(callback){
     type: 'GET',
     dataType: 'json',
     success: function(data) {
-      console.log(data);
+      // console.log(data); <<< CONSOLE LOG IS YOUR BEST FRIEND. Developer Tools make sense finally. 
       callback(data);
     }
   })
@@ -63,7 +74,11 @@ function success(parsedJSON) {
   //  5. make a variable `ctx` and select the canvas with the id of spotify-chart
   //     * also make sure to specify 2d context
   //  6. make a new bar chart!
-  var topTen = extractTop10Tracks(parsedJSON);
+  var topTen = extractTop10Tracks(parsedJSON.tracks);
+  // parsedJSON.tracks is important. It makes an array of tracks, not simply the raw objects.
   var popularity = extractPopularity(topTen);
-  console.log(popularity);
+  var names = extractNames(topTen);
+  var charted = chartData(names, popularity);
+  var ctx = document.getElementById('spotify-chart').getContext('2d');
+  var spotifyChart = new Chart(ctx).Bar(charted);
 }
