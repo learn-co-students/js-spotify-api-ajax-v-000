@@ -16,7 +16,8 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
-  return tracks;
+  var top10 = tracks.slice(0,10);
+  return top10;
 }
 
 function extractPopularity(tracks) {
@@ -50,9 +51,9 @@ function chartData(labels, inputData) {
 }
 
 function getSpotifyTracks(callback){
-  $.ajax({
-    
-  })
+  $.get(url, function(json){
+    callback(json);
+  });
   // your ajax call here, on success it should call on the 
   // parameter it's passed (it's a function), and pass it's 
   // parameter the data it received
@@ -71,4 +72,12 @@ function success(parsedJSON) {
   //  5. make a variable `ctx` and select the canvas with the id of spotify-chart
   //     * also make sure to specify 2d context
   //  6. make a new bar chart!
+  
+  var topTracks = extractTop10Tracks(parsedJSON.tracks);
+  var names = extractNames(topTracks);
+  var popularity = extractPopularity(topTracks);
+  var data = chartData(names, popularity);
+  var ctx = document.getElementById("spotify-chart").getContext("2d");
+
+  new Chart(ctx).Bar(data);
 }
