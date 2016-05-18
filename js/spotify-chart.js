@@ -1,9 +1,9 @@
 var url = "https://api.spotify.com/v1/artists/43ZHCT0cAZBISjO8DG9PnE/top-tracks?country=SE";
 
 var dataSetProperties = {
-  fillColor: 'rgba(220,220,220,0.5)', 
-  strokeColor: 'rgba(220,220,220,0.8)', 
-  highlightFill: 'rgba(220,220,220,0.75)', 
+  fillColor: 'rgba(220,220,220,0.5)',
+  strokeColor: 'rgba(220,220,220,0.8)',
+  highlightFill: 'rgba(220,220,220,0.75)',
   highlightStroke: 'rgba(220,220,220,1)'
 };
 
@@ -16,15 +16,23 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
-  // your code here
+  return tracks
 }
 
 function extractPopularity(tracks) {
-  // your code here
+  var popularity = []
+  for (i = 0; i < tracks.length; i++) {
+    popularity.push(tracks[i].popularity);
+  }
+  return popularity;
 }
 
 function extractNames(tracks) {
-  // your code here
+  var names = [];
+  for (i = 0; i < tracks.length; i++) {
+    names.push(tracks[i].name);
+  }
+  return names;
 }
 
 function chartData(labels, inputData) {
@@ -34,14 +42,26 @@ function chartData(labels, inputData) {
 }
 
 function getSpotifyTracks(callback){
-  // your ajax call here, on success it should call on the 
-  // parameter it's passed (it's a function), and pass it's 
+  $.ajax({
+    url: url,
+    success: function(result) {
+      callback(result);
+    }
+  });
+}
+  // your ajax call here, on success it should call on the
+  // parameter it's passed (it's a function), and pass it's
   // parameter the data it received
 
   // use the url variable defined above if it helps
-}
+
 
 function success(parsedJSON) {
+  var tracks = extractTop10Tracks(parsedJSON.tracks);
+  var names = extractNames(tracks);
+  var popularity = extractPopularity(tracks);
+  debugger
+
   // this function will make a new bar chart, refer to this url:
   // http://www.chartjs.org/docs/#bar-chart
   // you will need to call on:
