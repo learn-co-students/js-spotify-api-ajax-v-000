@@ -1,12 +1,5 @@
 var url = "https://api.spotify.com/v1/artists/43ZHCT0cAZBISjO8DG9PnE/top-tracks?country=SE";
 
-var dataSetProperties = {
-  fillColor: 'rgba(220,220,220,0.5)',
-  strokeColor: 'rgba(220,220,220,0.8)',
-  highlightFill: 'rgba(220,220,220,0.75)',
-  highlightStroke: 'rgba(220,220,220,1)'
-};
-
 $(function() {
   getSpotifyTracks(success);
 });
@@ -36,10 +29,20 @@ function extractNames(tracks) {
 }
 
 function chartData(labels, inputData) {
-  // your code here
-
-  // use the dataSetProperties variable defined above if it helps
+  var dataObj = {};
+  dataObj.labels = labels;
+  dataObj.datasets = [
+    {
+      fillColor: 'rgba(220,220,220,0.5)',
+      strokeColor: 'rgba(220,220,220,0.8)',
+      highlightFill: 'rgba(220,220,220,0.75)',
+      highlightStroke: 'rgba(220,220,220,1)',
+      data: inputData
+    }
+  ];
+  return dataObj;
 }
+
 
 function getSpotifyTracks(callback){
   $.ajax({
@@ -60,7 +63,9 @@ function success(parsedJSON) {
   var tracks = extractTop10Tracks(parsedJSON.tracks);
   var names = extractNames(tracks);
   var popularity = extractPopularity(tracks);
-  debugger
+  var data = chartData(names, popularity);
+  var ctx = document.getElementById("spotify-chart").getContext("2d");
+  new Chart(ctx).Bar(data);
 
   // this function will make a new bar chart, refer to this url:
   // http://www.chartjs.org/docs/#bar-chart
