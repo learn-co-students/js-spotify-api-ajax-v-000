@@ -53,10 +53,18 @@ function chartData( labels, inputData ) {
 
 function getSpotifyTracks(callback){
 
-  $.ajax( { url: url } )
-    .done( function ( responseData ) {
-      callback( responseData )
-    } );
+  $.ajax({
+    url: url,
+    success: function( result ) {
+      callback( result );
+    }
+  } );
+  //
+  // $.ajax( { url: url } )
+  //   .done( function ( responseData ) {
+  //     console.log(callback(responseData));
+  //     callback( responseData )
+  //   } );
 }
 
 function success( parsedJSON ) {
@@ -65,6 +73,9 @@ function success( parsedJSON ) {
   var names = extractNames( tracks );
   var popularity = extractPopularity( tracks );
   var data = chartData( names, popularity );
+  console.log(tracks);
+  // var ctx = document.getElementById("spotify-chart").getContext("2d");
+  // new Chart(ctx).Bar(data);
   var ctx = $( '#spotify-chart' ).get(0).getContext( '2d' );
   var barChart = new Chart( ctx ).Bar( data );
 }
