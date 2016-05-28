@@ -68,7 +68,6 @@ function getSpotifyTracks(callback){
       callback(response);
       return response;
     }
-  }
   })
   // use the url variable defined above if it helps
 }
