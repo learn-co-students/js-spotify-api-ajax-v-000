@@ -66,7 +66,7 @@ function getSpotifyTracks(callback){
     dataType: 'json'
   }).done(function(response) {
     callback(response);
-    return callback;
+    return response;
   })
   // use the url variable defined above if it helps
 }
