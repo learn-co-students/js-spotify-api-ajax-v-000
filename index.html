@@ -4,8 +4,19 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/chart.js"></script>
     <script src="js/spotify-chart.js"></script>
+
+
   <body>
     <h1>Ten most popular songs for Elvis Presley</h1>
+    <button type="button" id="test" name="button"></button>
     <canvas id="spotify-chart" width="1000" height="1000"></canvas>
+    <script>
+      var ctx = $("#spotify-chart").get(0).getContext("2d");
+      myBarChart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData(["test","testhh"], [45,65])
+        });
+
+    </script>
   </body>
 </html>
