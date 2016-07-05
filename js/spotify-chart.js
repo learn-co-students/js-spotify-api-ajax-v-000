@@ -45,14 +45,14 @@ function chartData(labels, inputData) {
   return chartInfo;
 }
 
-function getSpotifyTracks(){
+function getSpotifyTracks(callback){
 
 return $.ajax({
     url: url,
     contentType: 'application/json',
     dataType: 'json',
-    success: function(response) {
-      success(response.tracks);
+    success:function(response) {
+      return callback(response);
     },
     error: function(error) {
       console.log(error);
@@ -61,30 +61,13 @@ return $.ajax({
 }
 
 function success(parsedJSON) {
+debugger;
+ // this function will make a new bar chart, refer to this url:
+ // http://www.chartjs.org/docs/#bar-chart
 
-  // this function will make a new bar chart, refer to this url:
-  // http://www.chartjs.org/docs/#bar-chart
-
-  var labels = extractNames(extractTop10Tracks(parsedJSON));
-  var popularity = extractPopularity(extractTop10Tracks(parsedJSON));
-
-
-    var ctx = $("#spotify-chart").get(0).getContext("2d");
-
-
-    myBarChart = new Chart(ctx, {
-      type: 'bar',
-      data: chartData(labels, popularity)
-      });
-
-
-
-  // you will need to call on:
-  //  1. extractTop20Tracks - pass it tracks
-  //  2. extractNames -  pass it the result of #1
-  //  3. extractPopularity - pass it the result of #1
-  //  4. chartData - pass it results of #2 and #3
-  //  5. make a variable `ctx` and select the canvas with the id of spotify-chart
-  //     * also make sure to specify 2d context
-  //  6. make a new bar chart!
+ var labels = extractNames(extractTop10Tracks(parsedJSON.tracks));
+ var popularity = extractPopularity(extractTop10Tracks(parsedJSON.tracks));
+ var data = chartData(labels, popularity);
+ var ctx = $("#spotify-chart").get(0).getContext("2d");
+ var myBarChart = new Chart(ctx).Bar(data);
 }
