@@ -52,7 +52,7 @@ return $.ajax({
     contentType: 'application/json',
     dataType: 'json',
     success: function(response) {
-      return response;
+      success(response.tracks);
     },
     error: function(error) {
       console.log(error);
