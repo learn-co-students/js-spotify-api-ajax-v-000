@@ -57,10 +57,7 @@ return $.ajax({
     error: function(error) {
       console.log(error);
     }
-  }).done(function(response) {
-    success(response.tracks);
-  });
-
+  })
 }
 
 function success(parsedJSON) {
@@ -73,7 +70,7 @@ function success(parsedJSON) {
 
 
     var ctx = $("#spotify-chart").get(0).getContext("2d");
-    
+
 
     myBarChart = new Chart(ctx, {
       type: 'bar',
