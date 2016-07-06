@@ -16,21 +16,21 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
-  return tracks['tracks'].slice(0,10);
+  return tracks.tracks.slice(0,10);
   // your code here
 }
 
 function extractPopularity(tracks) {
   // your code here
   return tracks.map(function(track){
-    return track['popularity']
+    return track.popularity
   });
 }
 
 function extractNames(tracks) {
   // your code here
   return tracks.map(function(track){
-    return track['name']
+    return track.name
   });
 }
 
@@ -43,10 +43,10 @@ function chartData(labels, inputData) {
     datasets: [
       {
         // label: "Track Names",
-        fillColor: 'rgba(220,220,220,0.5)', 
-        strokeColor: 'rgba(220,220,220,0.8)', 
-        highlightFill: 'rgba(220,220,220,0.75)', 
-        highlightStroke: 'rgba(220,220,220,1)',
+        fillColor: dataSetProperties.fillColor, 
+        strokeColor: dataSetProperties.strokeColor, 
+        highlightFill: dataSetProperties.highlightFill, 
+        highlightStroke: dataSetProperties.highlightStroke,
         data: inputData,
       }
     ]
