@@ -57,9 +57,10 @@ function getSpotifyTracks(callback){
   // use the url variable defined above if it helps
   $.ajax({
     url: url,
-    dataType: 'json'
-  }).done(function(response) {
-    callback(response);
+    dataType: 'json',
+    success: function(response) {
+      callback(response);
+    }
   });
 }
 
