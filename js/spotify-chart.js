@@ -1,4 +1,4 @@
-var url = "https://api.spotify.com/v1/artists/43ZHCT0cAZBISjO8DG9PnE/top-tracks?country=SE";
+var url = "https://api.spotify.com/v1/artists/4Z8W4fKeB5YxbusRsdQVPb/top-tracks?country=SE";
 
 var dataSetProperties = {
   fillColor: 'rgba(220,220,220,0.5)', 
