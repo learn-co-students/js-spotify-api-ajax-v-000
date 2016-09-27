@@ -4,7 +4,7 @@ var sampleTracks = spotifyData.tracks.slice(0,5);
 describe("spotifyChart", function(){
   describe("#extractTop10Tracks", function() {
     it("returns the first 10 tracks from the tracks array", function(){
-      expect(extractTop10Tracks(spotifyData.tracks).length).toEqual(10);
+      expect(extractTop10Tracks(spotifyData).length).toEqual(10);
     });
   });
 
@@ -50,7 +50,7 @@ describe("spotifyChart", function(){
   describe("ran server and checked that chart rendered", function(){
     it("looks similar to the picture in the readme and I'm done with the lab", function() {
       // type your name in the empty string below
-      var signature = "Katie Hoffman";
+      var signature = "Saron Desta";
       expect(signature.length).toBeGreaterThan(4);
       var names = signature.split(" ");
       expect(names.length).toBeGreaterThan(1);
