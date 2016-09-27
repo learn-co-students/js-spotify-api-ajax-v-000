@@ -59,7 +59,7 @@ function getSpotifyTracks(callback){
   $.ajax({
     url: url,
     success: function(response) {
-      callback(results);
+      callback(response);
     }
   })
 
@@ -79,6 +79,7 @@ function success(parsedJSON) {
   var topTracks = extractTop10Tracks(parsedJSON.tracks);
   var names = extractNames(parsedJSON.tracks);
   var popularities = extractPopularity(parsedJSON.tracks);
+  var data = chartData(names, popularities);
   var ctx = $("#spotify-chart").get(0).getContext("2d");
-  var myBarChart = new Chart(ctx).Bar(data, {});
+  var myBarChart = new Chart(ctx).Bar(data);
 }
