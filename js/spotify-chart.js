@@ -23,7 +23,7 @@ function extractTop10Tracks(tracks) {
 function extractPopularity(tracks) {
   // your code here
   var arrayOfPopularity = [];
-  for(var i = 0; i < 10; i++) {
+  for(var i = 0; i < tracks.length; i++) {
     arrayOfPopularity[i] = tracks[i].popularity
   }
   return arrayOfPopularity;
@@ -32,7 +32,7 @@ function extractPopularity(tracks) {
 function extractNames(tracks) {
   // your code here
   var arrayOfNames = [];
-  for(var i = 0; i < 10; i++) {
+  for(var i = 0; i < tracks.length; i++) {
     arrayOfNames[i] = tracks[i].name
   }
   return arrayOfNames;
@@ -44,13 +44,13 @@ function chartData(labels, inputData) {
   var dataForChart = {
     labels: labels,
     datasets: [{
-        label: 'Popularity of Track',
-        data: inputData,
-        backgroundColor: ['rgba(220,220,220,0.5)'],
-        borderColor: ['rgba(220,220,220,0.8)'],
-        borderWidth: 1
+    fillColor: 'rgba(220,220,220,0.5)', 
+  strokeColor: 'rgba(220,220,220,0.8)', 
+  highlightFill: 'rgba(220,220,220,0.75)', 
+  highlightStroke: 'rgba(220,220,220,1)',
+    data: inputData      
     }]
-  }
+  };
   return dataForChart;
 }
 
