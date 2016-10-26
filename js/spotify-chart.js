@@ -1,12 +1,5 @@
 var url = "https://api.spotify.com/v1/artists/43ZHCT0cAZBISjO8DG9PnE/top-tracks?country=SE";
 
-var dataSetProperties = {
-  fillColor: 'rgba(220,220,220,0.5)',
-  strokeColor: 'rgba(220,220,220,0.8)',
-  highlightFill: 'rgba(220,220,220,0.75)',
-  highlightStroke: 'rgba(220,220,220,1)'
-};
-
 // Shorthand for $( document ).ready() (https://learn.jquery.com/using-jquery-core/document-ready/)
 $(function() {
   getSpotifyTracks(success);
@@ -17,7 +10,7 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(spotifyData) {
-  return spotifyData;
+  return spotifyData.tracks;
 }
 
 function extractPopularity(tracks) {
@@ -33,27 +26,23 @@ function extractNames(tracks) {
 }
 
 function chartData(labels, inputData) {
-  return {
-    labels: labels,
-    datasets: [
-      {
-        label: 'Song Popularity',
-        data: inputData,
-        fillColor: 'rgba(220,220,220,0.5)',
-        strokeColor: 'rgba(220,220,220,0.8)',
-        highlightFill: 'rgba(220,220,220,0.75)',
-        highlightStroke: 'rgba(220,220,220,1)',
-        borderWidth: 1,
-      }
-    ]
-  };
+  var dataObj = {};
+  dataObj.labels = labels;
+  dataObj.datasets = [
+    {
+      data: inputData,
+      fillColor: 'rgba(220,220,220,0.5)',
+      strokeColor: 'rgba(220,220,220,0.8)',
+      highlightFill: 'rgba(220,220,220,0.75)',
+      highlightStroke: 'rgba(220,220,220,1)'
+    }
+  ];
+  return dataObj;
 }
-
-  // use the dataSetProperties variable defined above if it helps
 
 function getSpotifyTracks(callback){
   $.getJSON(url, function(data) {
-    success(data);
+    callback(data);
   });
 }
 
@@ -73,17 +62,5 @@ function success(parsedJSON) {
   //     * also make sure to specify 2d context
   var ctx = document.getElementById("spotify-chart").getContext("2d");
   //  6. make a new bar chart!
-  new Chart(ctx, {
-    type: 'bar',
-    data: data,
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
-    }
-  });
+  new Chart(ctx).Bar(data);
 }
