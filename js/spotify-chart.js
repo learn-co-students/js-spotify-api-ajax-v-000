@@ -79,6 +79,7 @@ function success(parsedJSON) {
   var tracks = extractTop10Tracks(parsedJSON.tracks);
   var names = extractNames(tracks);
   var streams = extractPopularity(tracks);
+  
   var data = chartData(names, streams);
   var ctx = document.getElementById("spotify-chart").getContext("2d");
   new Chart(ctx).Bar(data);
