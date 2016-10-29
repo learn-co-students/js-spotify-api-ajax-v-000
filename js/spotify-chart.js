@@ -11,16 +11,15 @@ $(function() {
   getSpotifyTracks(success);
 });
 
-// write functions to pass spec tests here outside the jQuery doc ready
-// then call function within doc ready to get them to work
-// and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
-  // your code here
+  return tracks.slice(0,10);
 }
 
 function extractPopularity(tracks) {
-  // your code here
+  return $.map(tracks, function(track, index){
+    return track['popularity'];
+  });
 }
 
 function extractNames(tracks) {
@@ -37,6 +36,12 @@ function getSpotifyTracks(callback){
   // your ajax call here, on success it should call on the 
   // parameter it's passed (it's a function), and pass it's 
   // parameter the data it received
+  $.ajax({
+    url: url,
+    success: function(result) {
+      callback(result);
+    }
+  });
 
   // use the url variable defined above if it helps
 }
