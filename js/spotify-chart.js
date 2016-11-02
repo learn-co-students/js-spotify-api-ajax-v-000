@@ -62,10 +62,10 @@ function success(parsedJSON) {
   var popularity = extractPopularity(tracks);
   var names = extractNames(tracks);
   var ctx = document.getElementById("spotify-chart").getContext('2d');
-  console.log(chartData(names, popularity))
+  var data = chartData(names, popularity)
   var myChart = new Chart(ctx, {
     type: 'bar',
-    data: chartData(names, popularity),
+    data: data,
     options: {
         scales: {
             yAxes: [{
