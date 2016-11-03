@@ -10,7 +10,6 @@ var dataSetProperties = {
 $(function() {
   getSpotifyTracks(success);
 });
-
 // write functions to pass spec tests here outside the jQuery doc ready
 // then call function within doc ready to get them to work
 // and display the chart correctly in index.html
@@ -61,21 +60,9 @@ function success(parsedJSON) {
   var tracks = extractTop10Tracks(parsedJSON.tracks);
   var popularity = extractPopularity(tracks);
   var names = extractNames(tracks);
-  var ctx = document.getElementById("spotify-chart").getContext('2d');
   var data = chartData(names, popularity)
-  var myChart = new Chart(ctx, {
-    type: 'bar',
-    data: data,
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-  })
+  var ctx = $("#spotify-chart").get(0).getContext("2d");
+  var myChart = new Chart(ctx).Bar(data);
   // this function will make a new bar chart, refer to this url:
   // http://www.chartjs.org/docs/#bar-chart
   // you will need to call on:
