@@ -22,7 +22,21 @@ describe("spotifyChart", function(){
 
   describe("#chartData", function(){
     it("returns an object where the attribute `labels` points to the first param, the attribute `datasets` points to an array of objects, the first of which has six attributes, 1) label 2) fillColor 3) strokeColor 4) highlightFill 5) highlightStroke and 6) data, data points to the second param", function(){
-      var expected = { labels : [ 'label1', 'label2' ], datasets : [ { fillColor : 'rgba(220,220,220,0.5)', strokeColor : 'rgba(220,220,220,0.8)', highlightFill : 'rgba(220,220,220,0.75)', highlightStroke : 'rgba(220,220,220,1)', data : [ 'data1', 'data2' ] } ] };
+      var expected = {
+        labels : [
+          'label1',
+          'label2'
+        ],
+        datasets : [
+          { fillColor : 'rgba(220,220,220,0.5)',
+          strokeColor : 'rgba(220,220,220,0.8)',
+          highlightFill : 'rgba(220,220,220,0.75)',
+          highlightStroke : 'rgba(220,220,220,1)',
+          data : [
+            'data1', 'data2'
+          ]
+        } ]
+      };
       var data = chartData(['label1', 'label2'], ['data1', 'data2']);
       var dataSet = data.datasets[0];
 
@@ -50,7 +64,7 @@ describe("spotifyChart", function(){
   describe("ran server and checked that chart rendered", function(){
     it("looks similar to the picture in the readme and I'm done with the lab", function() {
       // type your name in the empty string below
-      var signature = "Katie Hoffman";
+      var signature = "Clare Horton";
       expect(signature.length).toBeGreaterThan(4);
       var names = signature.split(" ");
       expect(names.length).toBeGreaterThan(1);
