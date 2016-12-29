@@ -1,9 +1,9 @@
 var url = "https://api.spotify.com/v1/artists/43ZHCT0cAZBISjO8DG9PnE/top-tracks?country=SE";
 
 var dataSetProperties = {
-  fillColor: 'rgba(220,220,220,0.5)', 
-  strokeColor: 'rgba(220,220,220,0.8)', 
-  highlightFill: 'rgba(220,220,220,0.75)', 
+  fillColor: 'rgba(220,220,220,0.5)',
+  strokeColor: 'rgba(220,220,220,0.8)',
+  highlightFill: 'rgba(220,220,220,0.75)',
   highlightStroke: 'rgba(220,220,220,1)'
 };
 
@@ -17,27 +17,55 @@ $(function() {
 
 function extractTop10Tracks(tracks) {
   // your code here
+  return tracks.slice(0,10);
 }
 
 function extractPopularity(tracks) {
   // your code here
+  var popArray = [];
+  $.each(tracks, function(index, track) {
+    popArray.push(track.popularity);
+  });
+  return popArray;
 }
 
 function extractNames(tracks) {
   // your code here
+  var nameArray = [];
+  $.each(tracks, function(index, track) {
+    nameArray.push(track.name);
+  });
+  return nameArray;
 }
 
 function chartData(labels, inputData) {
   // your code here
-
+  var chartObject = {};
+  chartObject['labels'] = labels;
+  chartObject['datasets'] = [];
+  $.each(labels, function(index, label) {
+    chartObject['datasets'][index] = {};
+    chartObject['datasets'][index]['label'] = label;
+    chartObject['datasets'][index]['fillColor'] = dataSetProperties.fillColor;
+    chartObject['datasets'][index]['strokeColor'] = dataSetProperties.strokeColor;
+    chartObject['datasets'][index]['highlightFill'] = dataSetProperties.highlightFill;
+    chartObject['datasets'][index]['highlightStroke'] = dataSetProperties.highlightStroke;
+    chartObject['datasets'][index]['data'] = inputData;
+  })
+  return chartObject;
   // use the dataSetProperties variable defined above if it helps
 }
 
 function getSpotifyTracks(callback){
-  // your ajax call here, on success it should call on the 
-  // parameter it's passed (it's a function), and pass it's 
+  // your ajax call here, on success it should call on the
+  // parameter it's passed (it's a function), and pass it's
   // parameter the data it received
-
+  $.getJSON({
+    'url': url,
+    'type': 'GET'
+  }).done(function(data) {
+    callback(data);
+  });
   // use the url variable defined above if it helps
 }
 
