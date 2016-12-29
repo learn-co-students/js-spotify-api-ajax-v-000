@@ -60,10 +60,10 @@ function getSpotifyTracks(callback){
   // your ajax call here, on success it should call on the
   // parameter it's passed (it's a function), and pass it's
   // parameter the data it received
-  $.ajax({
+  $.when($.ajax({
     'url': url,
     'type': 'GET'
-  }).done(function(data) {
+  })).then(function(data) {
     callback(data);
   });
   // use the url variable defined above if it helps
