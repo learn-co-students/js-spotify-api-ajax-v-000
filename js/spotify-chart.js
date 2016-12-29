@@ -70,6 +70,12 @@ function getSpotifyTracks(callback){
 }
 
 function success(parsedJSON) {
+  var topTracks = extractTop10Tracks(parsedJSON.tracks);
+  var trackNames = extractNames(topTracks);
+  var trackPopularity = extractPopularity(topTracks);
+  var dataForChart = chartData(trackNames, trackPopularity);
+  var ctx = $('#spotify-chart').get(0).getContext("2d");
+  var myBarChart = new Chart(ctx).Bar(dataForChart);
   // this function will make a new bar chart, refer to this url:
   // http://www.chartjs.org/docs/#bar-chart
   // you will need to call on:
