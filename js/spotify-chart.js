@@ -1,13 +1,7 @@
 var url = "https://api.spotify.com/v1/artists/43ZHCT0cAZBISjO8DG9PnE/top-tracks?country=SE";
 
-var dataSetProperties = {
-  fillColor: 'rgba(220,220,220,0.5)', 
-  strokeColor: 'rgba(220,220,220,0.8)', 
-  highlightFill: 'rgba(220,220,220,0.75)', 
-  highlightStroke: 'rgba(220,220,220,1)'
-};
-
 $(function() {
+  // getSpotifyTracks(callback) we are calling a callback function
   getSpotifyTracks(success);
 });
 
@@ -17,19 +11,40 @@ $(function() {
 
 function extractTop10Tracks(tracks) {
   // your code here
+  return tracks.slice(0, 10);
 }
 
 function extractPopularity(tracks) {
   // your code here
+  return tracks.map(function(track) {
+    return track['popularity'];
+    // return track.popularity;
+  });  
 }
 
 function extractNames(tracks) {
   // your code here
+  return tracks.map(function(track) {
+    return track['name'];
+    // return track.name;
+  });
 }
 
 function chartData(labels, inputData) {
   // your code here
-
+  // console.log(labels, inputData);
+  
+  return data = {
+    labels: labels,
+    datasets: [{
+      fillColor: 'rgba(220,220,220,0.5)', 
+      strokeColor: 'rgba(220,220,220,0.8)', 
+      highlightFill: 'rgba(220,220,220,0.75)', 
+      highlightStroke: 'rgba(220,220,220,1)',       
+      label: "Spotify Tracks",
+      data: inputData     
+    }]
+  };
   // use the dataSetProperties variable defined above if it helps
 }
 
@@ -39,9 +54,29 @@ function getSpotifyTracks(callback){
   // parameter the data it received
 
   // use the url variable defined above if it helps
+  // $.get(url).success(callback);
+  $.ajax({
+    url: url,
+    success: function(result) {
+      callback(result);
+    }
+  });
 }
 
 function success(parsedJSON) {
+  // console.log(parsedJSON);
+  var tracks = extractTop10Tracks(parsedJSON.tracks);
+  var names = extractNames(tracks);
+  var popularity = extractPopularity(tracks);
+  var data = chartData(names, popularity);
+
+  var ctx = document.getElementById("spotify-chart").getContext("2d");
+  // var ctx = $('#spotify-chart').get(0).getContext("2d");
+  // var ctx = $('#spotify-chart')[0].getContext("2d");
+
+  var myBarChart = new Chart(ctx).Bar(data);
+  // don't really have to set a myBarChart var  
+
   // this function will make a new bar chart, refer to this url:
   // http://www.chartjs.org/docs/#bar-chart
   // you will need to call on:
