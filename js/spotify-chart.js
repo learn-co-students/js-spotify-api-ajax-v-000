@@ -27,9 +27,7 @@ function extractTop10Tracks(tracks) {
   for (var i=0; i<numTracks; i++) {
     topTracks.push(tracks[i]);
   }
-  alert("here" + topTracks);
-
-    return topTracks;
+  return topTracks;
 }
 
 function extractPopularity(tracks) {
