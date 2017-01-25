@@ -41,7 +41,6 @@ function chartData(labels, inputData) {
   // use the dataSetProperties variable defined above if it helps
   var dataObj = {};
   dataObj.labels = labels;
-  // dataObj.datasets = dataSetProperties;
   dataObj.datasets = [
     {
       fillColor: 'rgba(220,220,220,0.5)',
