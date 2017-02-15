@@ -16,19 +16,42 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
-  // your code here
+  return tracks.slice(0, 10);
 }
 
 function extractPopularity(tracks) {
-  // your code here
+  popularity = []
+  $.each(tracks, function(index, track) {
+    popularity.push(track.popularity)
+  })
+  return popularity
 }
 
 function extractNames(tracks) {
-  // your code here
+  names = []
+  $.each(tracks, function(index, track) {
+    names.push(track.name)
+  })
+  return names
 }
 
 function chartData(labels, inputData) {
   // your code here
+  var data = {
+    labels: labels,
+    datasets: [
+      {
+        label: "Popularity",
+        fillColor: 'rgba(220,220,220,0.5)',
+        strokeColor: 'rgba(220,220,220,0.8)',
+        highlightFill: 'rgba(220,220,220,0.75)',
+        highlightStroke: 'rgba(220,220,220,1)',
+        data: inputData
+      }
+    ]
+  };
+
+return data;
 
   // use the dataSetProperties variable defined above if it helps
 }
@@ -37,7 +60,14 @@ function getSpotifyTracks(callback){
   // your ajax call here, on success it should call on the 
   // parameter it's passed (it's a function), and pass it's 
   // parameter the data it received
-
+  $.ajax({
+    url: url,
+    type: "GET",
+    dataType: "json", 
+    success: function(tracks){
+      callback(tracks);
+    }
+  })
   // use the url variable defined above if it helps
 }
 
@@ -46,10 +76,16 @@ function success(parsedJSON) {
   // http://www.chartjs.org/docs/#bar-chart
   // you will need to call on:
   //  1. extractTop20Tracks - pass it tracks
+  var tracks = extractTop10Tracks(parsedJSON.tracks);
   //  2. extractNames -  pass it the result of #1
+  var names = extractNames(tracks);
   //  3. extractPopularity - pass it the result of #1
+  var popularity = extractPopularity(tracks);
   //  4. chartData - pass it results of #2 and #3
+  var data = chartData(names, popularity);
   //  5. make a variable `ctx` and select the canvas with the id of spotify-chart
   //     * also make sure to specify 2d context
+  var ctx = document.getElementById("spotify-chart").getContext("2d"); 
   //  6. make a new bar chart!
+  new Chart(ctx).Bar(data)
 }
