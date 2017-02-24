@@ -17,10 +17,16 @@ $(function() {
 
 function extractTop10Tracks(tracks) {
   // your code here
+  return tracks.slice(0, 10);
 }
 
 function extractPopularity(tracks) {
   // your code here
+  var popularityIndices = [];
+  for (i = 0; i < tracks.length; i++) {
+    popularityIndices.push(tracks[i].popularity);
+  }
+  return popularityIndices;
 }
 
 function extractNames(tracks) {
@@ -42,11 +48,12 @@ function getSpotifyTracks(callback){
   $.ajax({
     url: url,
     type: 'GET',
-    dataType: 'jsonp'
-  }).success(function(response) {
-    callback(response);
+    dataType: 'jsonp',
+    success: function(response) {
+      callback(response);
+    }
   });
-}
+};
 
 function success(parsedJSON) {
   // this function will make a new bar chart, refer to this url:
