@@ -36,12 +36,12 @@ function extractNames(tracks) {
 
 function chartData(labels, inputData) {
   // your code here
-  var ctx = $('#spotify-chart').get(0).getContext("2d");
+
   var data = {
     labels: labels,
     datasets: [
     {
-      fillColor: 'rgba(220,200,200,0.5)',
+      fillColor: 'rgba(220,220,220,0.5)',
       strokeColor: 'rgba(220,220,220,0.8)',
       highlightFill: 'rgba(220,220,220,0.75)',
       highlightStroke: 'rgba(220,220,220,1)',
@@ -49,7 +49,6 @@ function chartData(labels, inputData) {
     }
     ]
   };
-  var myBarChart = new Chart(ctx).Bar(data, dataSetProperties);
   return data;
   // use the dataSetProperties variable defined above if it helps
 }
@@ -61,14 +60,18 @@ function getSpotifyTracks(callback){
   // parameter the data it received
 
   // use the url variable defined above if it helps
-  $.get(url).success(callback);
-};
+  $.ajax({url: url, success: callback})
+}
 
 function success(parsedJSON) {
   var tracks = extractTop10Tracks(parsedJSON);
   var names = extractNames(tracks);
   var popularity = extractPopularity(tracks);
-  chartData(names, popularity);
+  var data = chartData(names, popularity);
+
+  var ctx = $('#spotify-chart').get(0).getContext("2d");
+  var myBarChart = new Chart(ctx).Bar(data, dataSetProperties);
+
   // console.log(tracks);
   // this function will make a new bar chart, refer to this url:
   // http://www.chartjs.org/docs/#bar-chart
