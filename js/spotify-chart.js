@@ -7,8 +7,10 @@ var dataSetProperties = {
   highlightStroke: 'rgba(220,220,220,1)'
 };
 
+
+
 $(function() {
-  getSpotifyTracks(success);
+    getSpotifyTracks();
 });
 
 // write functions to pass spec tests here outside the jQuery doc ready
@@ -17,6 +19,10 @@ $(function() {
 
 function extractTop10Tracks(tracks) {
   // your code here
+  if (tracks.length == 10) {
+    var top = tracks;
+  }
+  return top; 
 }
 
 function extractPopularity(tracks) {
@@ -35,10 +41,31 @@ function chartData(labels, inputData) {
 
 function getSpotifyTracks(callback){
   // your ajax call here, on success it should call on the 
-  // parameter it's passed (it's a function), and pass it's 
+  // parameter it's passed (it's a function), and pass its 
   // parameter the data it received
 
   // use the url variable defined above if it helps
+
+
+
+  $.ajax({
+    type: 'get',
+    url: url,
+    data: 'data',
+    dataType: "JSON",
+
+  }).done(function(data) {
+    var alb = data.tracks;
+    //callback success(alb)
+    alb.forEach(function(element){
+    // extractTop10Tracks(alb);
+    // extractNames(alb);
+    // extractPopularity(alb);
+    console.log(element.name + "-" + element.popularity);
+  })
+  }).fail(function() {
+    console.log("Poop!");
+  })
 }
 
 function success(parsedJSON) {
