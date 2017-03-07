@@ -7,8 +7,6 @@ var dataSetProperties = {
   highlightStroke: 'rgba(220,220,220,1)'
 };
 
-
-
 $(function() {
     getSpotifyTracks();
 });
@@ -27,16 +25,52 @@ function extractTop10Tracks(tracks) {
 
 function extractPopularity(tracks) {
   // your code here
+  var myList = [];
+  tracks.forEach(function(element){
+    myList.push(element.popularity);
+  })
+  return(myList);
 }
 
 function extractNames(tracks) {
   // your code here
+  var myList = [];
+  tracks.forEach(function(element){
+    myList.push(element.name);
+  })
+  return(myList);
 }
 
 function chartData(labels, inputData) {
+  console.log(labels, inputData)
   // your code here
 
   // use the dataSetProperties variable defined above if it helps
+//   var ctx = document.getElementById("spotify-chart").getContext("2d");
+//   var myChart = new Chart(ctx, {
+//     type: 'bar',
+//     data: {
+//         labels: labels,
+//         datasets: [{
+//             label: 'Popularity',
+//             data: inputData,
+//             fillColor: 'rgba(220,220,220,0.5)',
+//             strokeColor: 'rgba(220,220,220,0.8)',
+//             highlightFill: 'rgba(220,220,220,0.75)', 
+//             highlightStroke: 'rgba(220,220,220,1)',
+//             borderWidth: 1
+//         }]
+//     },
+//     options: {
+//         scales: {
+//             yAxes: [{
+//                 ticks: {
+//                     beginAtZero:true
+//                 }
+//             }]
+//         }
+//     }
+// });
 }
 
 function getSpotifyTracks(callback){
@@ -54,29 +88,37 @@ function getSpotifyTracks(callback){
     data: 'data',
     dataType: "JSON",
 
-  }).done(function(data) {
+    }).done(function(data) {
     var alb = data.tracks;
     //callback success(alb)
-    alb.forEach(function(element){
-    // extractTop10Tracks(alb);
-    // extractNames(alb);
-    // extractPopularity(alb);
-    console.log(element.name + "-" + element.popularity);
-  })
-  }).fail(function() {
-    console.log("Poop!");
-  })
+    //alb.forEach(function(element){
+    //console.log(element.name + "-" + element.popularity);
+    success(alb);
+    })
+  //}).fail(function(){
+    //console.log("Poop!");
+  //})
 }
 
 function success(parsedJSON) {
   // this function will make a new bar chart, refer to this url:
   // http://www.chartjs.org/docs/#bar-chart
   // you will need to call on:
-  //  1. extractTop20Tracks - pass it tracks
+  //  1. extractTop20Tracks - pass it tracks (typo?)
   //  2. extractNames -  pass it the result of #1
   //  3. extractPopularity - pass it the result of #1
   //  4. chartData - pass it results of #2 and #3
   //  5. make a variable `ctx` and select the canvas with the id of spotify-chart
   //     * also make sure to specify 2d context
   //  6. make a new bar chart!
+  var tracklist = extractTop10Tracks(parsedJSON);
+  var names = extractNames(tracklist);
+  var popularity = extractPopularity(tracklist);
+  //console.log(names, popularity);
+  chartData(names, popularity); 
+
 }
+
+
+
+
