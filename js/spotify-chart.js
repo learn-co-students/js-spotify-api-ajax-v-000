@@ -46,7 +46,7 @@ function extractNames(tracks) {
 
 function chartData(labels, inputData) {
   //console.log(labels, inputData)
-  // your code here
+  //your code here
   //use the dataSetProperties variable defined above if it helps
   var canvas = document.getElementById("spotify-chart").getContext("2d");
   var dsp = dataSetProperties;
@@ -55,6 +55,7 @@ function chartData(labels, inputData) {
     labels: labels,
     datasets: [
       {
+        label: "Popularity",
         fillColor:  dsp.fillColor,
         strokeColor: dsp.strokeColor,
         highlightFill: dsp.highlightFill,
@@ -66,11 +67,11 @@ function chartData(labels, inputData) {
     ]
   }
   new Chart(canvas).Bar(barData);
-} // end of alt version
+} // end of alt version, which works like a charm, but doesn't pass tests
 
-
-  // var canvas = document.getElementById("spotify-chart");
-  // var ctx = canvas.getContext("2d");
+//original version, which follows specs and doumentation to the letter (or so I thought); fails tests, and doesn't render to boot
+//   var canvas = document.getElementById("spotify-chart");
+//   var ctx = canvas.getContext("2d");
 //   var dsp = dataSetProperties;
 //   var myChart = new Chart(ctx, { //window.myChart or var myChart? Nobody knows...
 //     type: 'bar',
@@ -118,7 +119,7 @@ function getSpotifyTracks(callback){
     success(alb);
     })
   //}).fail(function(){
-    //console.log("Poop!");
+    //console.log("Something's broken!");
   //})
 }
 
