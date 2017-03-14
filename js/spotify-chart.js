@@ -7,9 +7,12 @@ var dataSetProperties = {
   highlightStroke: 'rgba(220,220,220,1)'
 };
 
-$(function() {
-    getSpotifyTracks();
-});
+$(document).ready(getSpotifyTracks);
+//$(document).ready(testy);
+
+// $(function() {
+//     getSpotifyTracks();
+// });
 
 // write functions to pass spec tests here outside the jQuery doc ready
 // then call function within doc ready to get them to work
@@ -42,36 +45,55 @@ function extractNames(tracks) {
 }
 
 function chartData(labels, inputData) {
-  console.log(labels, inputData)
+  //console.log(labels, inputData)
   // your code here
+  //use the dataSetProperties variable defined above if it helps
+  var canvas = document.getElementById("spotify-chart").getContext("2d");
+  var dsp = dataSetProperties;
+  
+  var barData = {
+    labels: labels,
+    datasets: [
+      {
+        fillColor:  dsp.fillColor,
+        strokeColor: dsp.strokeColor,
+        highlightFill: dsp.highlightFill,
+        highlightStroke: dsp.highlightStroke,
 
-  // use the dataSetProperties variable defined above if it helps
-//   var ctx = document.getElementById("spotify-chart").getContext("2d");
-//   var myChart = new Chart(ctx, {
+
+        data: inputData
+      }
+    ]
+  }
+  new Chart(canvas).Bar(barData);
+} // end of alt version
+
+
+  // var canvas = document.getElementById("spotify-chart");
+  // var ctx = canvas.getContext("2d");
+//   var dsp = dataSetProperties;
+//   var myChart = new Chart(ctx, { //window.myChart or var myChart? Nobody knows...
 //     type: 'bar',
 //     data: {
-//         labels: labels,
-//         datasets: [{
-//             label: 'Popularity',
-//             data: inputData,
-//             fillColor: 'rgba(220,220,220,0.5)',
-//             strokeColor: 'rgba(220,220,220,0.8)',
-//             highlightFill: 'rgba(220,220,220,0.75)', 
-//             highlightStroke: 'rgba(220,220,220,1)',
-//             borderWidth: 1
-//         }]
+//       labels: labels,
+//       datasets: [{
+//         label: 'Popularity',
+//         data: inputData,
+//         fillColor: dsp.fillColor,
+//         strokeColor: dsp.strokeColor,
+//         highlightFill: dsp.highlightFill, 
+//         highlightStroke: dsp.highlightStroke,
+//         borderWidth: 1
+//       }]
 //     },
 //     options: {
-//         scales: {
-//             yAxes: [{
-//                 ticks: {
-//                     beginAtZero:true
-//                 }
-//             }]
-//         }
+//       responsive: true,
+//       legend: {
+//         position: 'top',
+//       },
 //     }
-// });
-}
+//   });
+// }
 
 function getSpotifyTracks(callback){
   // your ajax call here, on success it should call on the 
@@ -111,13 +133,22 @@ function success(parsedJSON) {
   //  5. make a variable `ctx` and select the canvas with the id of spotify-chart
   //     * also make sure to specify 2d context
   //  6. make a new bar chart!
+
   var tracklist = extractTop10Tracks(parsedJSON);
   var names = extractNames(tracklist);
   var popularity = extractPopularity(tracklist);
-  //console.log(names, popularity);
+
   chartData(names, popularity); 
 
 }
+
+// function testy() {
+//   var names = ["test1", "test2", "test3"];
+//   var popularity = [34, 44, 22];
+
+//   chartData(names, popularity); 
+
+// }
 
 
 
