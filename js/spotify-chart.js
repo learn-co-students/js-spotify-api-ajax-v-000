@@ -16,20 +16,47 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
-  // your code here
-}
+  return tracks.slice(0, 10);
+} 
 
 function extractPopularity(tracks) {
   // your code here
+  var popularity = [];
+  
+  tracks.forEach(function(track){
+    popularity.push(track.popularity);
+  });
+  return popularity;
 }
 
 function extractNames(tracks) {
   // your code here
+  var names = [];
+
+  tracks.forEach(function(track){
+    names.push(track.name);
+  });
+  return names;
 }
 
-function chartData(labels, inputData) {
-  // your code here
+function extractNumberOfStreams(tracks){
+ var streams = [];
 
+  tracks.forEach(function(track){
+    streams.push(1);
+  });
+  return streams; 
+}
+
+function chartData(labelsArr, inputData) {
+  // your code here
+  var chartInfo = {};
+  dataSetProperties.data = inputData;
+  
+  chartInfo.labels = labelsArr;
+  chartInfo.datasets = [dataSetProperties];
+
+  return chartInfo;
   // use the dataSetProperties variable defined above if it helps
 }
 
@@ -37,14 +64,28 @@ function getSpotifyTracks(callback){
   // your ajax call here, on success it should call on the 
   // parameter it's passed (it's a function), and pass it's 
   // parameter the data it received
-
+  $.ajax({
+    url: url, 
+    success: function(response){
+      callback(response);
+    }
+  })
   // use the url variable defined above if it helps
 }
+
 
 function success(parsedJSON) {
   // this function will make a new bar chart, refer to this url:
   // http://www.chartjs.org/docs/#bar-chart
   // you will need to call on:
+  var tracks = extractTop10Tracks(parsedJSON.tracks);
+  var names = extractNames(tracks);
+  var popularity = extractPopularity(tracks)
+  var data = chartData(names, popularity)
+  var ctx = document.getElementById("spotify-chart").getContext("2d");
+  
+  var barChart = new Chart(ctx).Bar(data);
+
   //  1. extractTop20Tracks - pass it tracks
   //  2. extractNames -  pass it the result of #1
   //  3. extractPopularity - pass it the result of #1
