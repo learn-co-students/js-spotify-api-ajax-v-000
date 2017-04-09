@@ -27,11 +27,9 @@ function extractNames(tracks) {
 function chartData(labels, inputData) {
   // your code here
   return {
-    type: 'bar',
       labels: labels,
       datasets: [
       {
-         label: "Presley Songs",
          fillColor: 'rgba(220,220,220,0.5)', 
          strokeColor: 'rgba(220,220,220,0.8)', 
          highlightFill: 'rgba(220,220,220,0.75)', 
@@ -43,7 +41,13 @@ function chartData(labels, inputData) {
 }
 
 function getSpotifyTracks(callback){
-  $.get(url).done(success)
+  $.ajax({
+    url: url,
+    done: function(result) {
+      callback(result);
+    }
+  });
+
   // your ajax call here, on success it should call on the 
   // parameter it's passed (it's a function), and pass it's 
   // parameter the data it received
@@ -55,9 +59,9 @@ function success(parsedJSON) {
       tracks = extractTop10Tracks(parsedJSON);
       names = extractNames(tracks);
       popularity = extractPopularity(tracks);
-      data = chartData(names, popularity);
+      var data = chartData(names, popularity);
       var ctx = document.getElementById("spotify-chart").getContext('2d');
-      new Chart(ctx, data);
+      new Chart(ctx).Bar(data);
 
       console.log(names)
       console.log(popularity)
