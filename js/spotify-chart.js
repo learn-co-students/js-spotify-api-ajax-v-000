@@ -16,6 +16,7 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
+  return tracks;
   // your code here
 }
 
