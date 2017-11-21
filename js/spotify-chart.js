@@ -16,32 +16,63 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
-  // your code here
+  return tracks.slice(0,10);
 }
 
 function extractPopularity(tracks) {
-  // your code here
+  return tracks.map(function(track){
+    return track.popularity;
+  });
 }
 
 function extractNames(tracks) {
-  // your code here
+  return tracks.map(function(track){
+    return track.name;
+  });
 }
 
 function chartData(labels, inputData) {
   // your code here
-
+  return {
+    labels: labels,
+    datasets: [
+      {
+        fillColor: dataSetProperties.fillColor,
+        strokeColor: dataSetProperties.strokeColor,
+        highlightFill: dataSetProperties.highlightFill,
+        highlightStroke: dataSetProperties.highlightStroke,
+        data: inputData
+      }
+    ]
+  };
   // use the dataSetProperties variable defined above if it helps
 }
 
 function getSpotifyTracks(callback){
+  console.log("get spotify")
   // your ajax call here, on success it should call on the 
   // parameter it's passed (it's a function), and pass it's 
   // parameter the data it received
-
+  $.ajax({url: url, success: success})
   // use the url variable defined above if it helps
 }
 
 function success(parsedJSON) {
+  console.log("success");
+  console.log(parsedJSON);
+  var top10Tracks = extractTop10Tracks(parsedJSON.tracks);
+  console.log("finished extractTop10Tracks");
+  var names = extractNames(top10Tracks);
+  console.log("finished extractNames");
+  var popularities = extractPopularity(top10Tracks);
+  console.log("finished Popularity");
+  var data = chartData(names, popularities);
+  console.log("finished chartData");
+  var ctx = $("#spotify-chart").get(0).getContext("2d");
+  console.log("ctx:");
+  console.log(ctx);
+  var myBarChart = new Chart(ctx).Bar(data, {});
+  console.log(myBarChart);
   // this function will make a new bar chart, refer to this url:
   // http://www.chartjs.org/docs/#bar-chart
   // you will need to call on:
