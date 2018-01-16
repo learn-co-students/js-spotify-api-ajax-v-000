@@ -16,24 +16,61 @@ $(function() {
 // and display the chart correctly in index.html
 
 function extractTop10Tracks(tracks) {
+  return tracks
   // your code here
 }
 
 function extractPopularity(tracks) {
+  var names = []
+  for (i = 0; i < tracks.length; i ++) {
+    names.push(tracks[i].popularity)
+
+  }
+  return names
   // your code here
 }
 
 function extractNames(tracks) {
+  var names = []
+  for (i = 0; i < tracks.length; i ++) {
+    names.push(tracks[i].name)
+
+  }
+  return names
   // your code here
 }
 
 function chartData(labels, inputData) {
+  var matches = {}
+  matches['labels'] = labels
+
+  matches['datasets'] = [ {
+  label: 'Top 10 Hits of Elvis',
+   fillColor: 'rgba(220,220,220,0.5)', 
+  strokeColor: 'rgba(220,220,220,0.8)', 
+  highlightFill: 'rgba(220,220,220,0.75)', 
+  highlightStroke: 'rgba(220,220,220,1)',
+  data: inputData }
+  ]
+  return matches
   // your code here
 
   // use the dataSetProperties variable defined above if it helps
 }
 
 function getSpotifyTracks(callback){
+  var songData = {}
+  $.ajax({
+    url: url,
+    contentType: 'application/json',
+    dataType: 'json',
+    success: function(data) {
+
+      return success(data.tracks)
+    }
+  })
+
+  
   // your ajax call here, on success it should call on the 
   // parameter it's passed (it's a function), and pass it's 
   // parameter the data it received
@@ -42,6 +79,18 @@ function getSpotifyTracks(callback){
 }
 
 function success(parsedJSON) {
+var top10 = extractTop10Tracks(parsedJSON)
+var names = extractNames(top10)
+var pop = extractPopularity(top10)
+var cdata = chartData(names, pop)
+ 
+
+var ctx = $("#spotify-chart").get(0).getContext("2d");
+new Chart(ctx).Bar(cdata)
+
+    
+
+
   // this function will make a new bar chart, refer to this url:
   // http://www.chartjs.org/docs/#bar-chart
   // you will need to call on:
