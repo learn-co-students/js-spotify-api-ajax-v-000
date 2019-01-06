@@ -1,0 +1,9 @@
+{
+  "requires": true,
+  "lockfileVersion": 1,
+  "dependencies": {
+    "get-spotify-client-credentials": "^1.0.0",
+    "spotify-web-api-js": "^1.1.1",
+    "spotify-web-api-node": "^4.0.0"
+  }
+}
